@@ -88,7 +88,7 @@
           in attrNames configurations;
         forAllEnvs = fn: builtins.listToAttrs (builtins.map fn envs);
         apps = forAllEnvs (env: {
-          name = env;
+          name = "dist:${env}";
           value = app env;
         });
         images = forAllEnvs (env: {
@@ -96,7 +96,7 @@
           value = docker env;
         });
       in {
-        packages = apps // images // { default = apps.development; };
+        packages = apps // images;
         devShells.default = pkgs.mkShell {
           inherit nativeBuildInputs;
           packages = with pkgs; [
