@@ -13,7 +13,9 @@
       let
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         nodejs = pkgs.nodejs_20;
-        nativeBuildInputs = with pkgs; [ nodejs nodePackages."@angular/cli" ];
+        nativeBuildInputs = with pkgs;
+          [ nodejs nodePackages."@angular/cli" ]
+          ++ pkgs.lib.optionals stdenv.isDarwin [ xcodebuild ];
         name = (pkgs.lib.importJSON ./package.json).name;
         app = env:
           let
